@@ -16,8 +16,11 @@ interface GroupNotification {
 
 const getWebSocketUrl = (token: string) => {
   const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-  return `${protocol}://localhost:8080/ws/group-notifications?token=${encodeURIComponent(token)}`;
+  const host = window.location.hostname;
+  return `${protocol}://${host}:8080/ws/group-notifications?token=${encodeURIComponent(token)}`;
 };
+
+
 
 const GroupNotificationsListener = () => {
   const { isAuthenticated } = useAuth();
@@ -61,10 +64,7 @@ const GroupNotificationsListener = () => {
     };
 
     socket.onerror = (error) => {
-      console.error(
-        "Błąd połączenia WebSocket z komunikatami grupowymi:",
-        error,
-      );
+      console.error("Błąd połączenia WebSocket z komunikatami grupowymi:", error);
     };
 
     return () => {
